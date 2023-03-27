@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: "postgres"
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  backend:
+    container_name: "backend"
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    command: bash -c "cargo run"
+    links:
+      - db
+    environment:
+      - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+    ports:
+      - 6666:6666
+
+  frontend:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    container_name: "tarot_frontend"
+    command: "yarn dev"
+    volumes:
+      - ./frontend:/home/app/frontend/
+      - /home/app/frontend/node_modules
+    ports:
+      - 3000:3000
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  
+
