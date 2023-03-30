@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 
-import CoinGeckoReducer from "./CoinGecko/reducers";
-import CoinMarketCapReducer from "./CoinMarketCap/reducers";
+import CoinGeckoReducer from "./coin_gecko/reducers";
+import CoinMarketCapReducer from "./coin_market_cap/reducers";
 
 
 export default combineReducers({

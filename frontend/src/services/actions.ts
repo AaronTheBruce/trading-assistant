@@ -1,2 +1,2 @@
-export * from './CoinGecko/actions';
-export * from './CoinMarketCap/action';
+export * from './coin_gecko/actions';
+export * from './coin_market_cap/action';
